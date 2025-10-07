@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #16171C;
+  --color-text: #FFFFFF;
+  --font-inter: "Inter", sans-serif;
+  --blue: #3677F4;
+  --hover-blue: #1760EC;
+  --text-grey: #D2D2D2;
+  --card-color: #24262E;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter;
+}
+
+.poppins {
+  font-family: Poppins;
+}
