@@ -1,0 +1,32 @@
+:root {
+  --color-bg: #16171C;
+  --color-text: #FFFFFF;
+  --blue: #3677F4;
+  --hover-blue: #1760EC;
+  --text-grey: #D2D2D2;
+  --card-color: #24262E;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans';
+}
+
+.poppins {
+  font-family: Poppins, Inter, sans-serif;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+[data-field].has-error {
+  border-color: #EB4335 !important;
+}

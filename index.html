@@ -2,20 +2,465 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ISOTOXIN</title>
+  <link rel="icon" href="./assets/logo.png" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
-  <title>isotoxin</title>
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./css/index.css" />
 </head>
 
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+  <header
+    class='w-full max-w-[1646px] mx-auto mt-0 lg:mt-10 pt-[21px] lg:pt-[47px] px-4 bg-[url("./public/bg-header-phone.png")] lg:bg-[url("/public/bg-header.png")] bg-no-repeat bg-center bg-cover lg:bg-auto'>
+    <div
+      class="w-full max-w-[1250px] mx-auto bg-[var(--color-bg)] rounded-[100px] px-7 py-[24px] flex justify-between items-center">
+      <div class="flex items-center gap-[50px]">
+        <button id="open-menu" aria-label="Open menu"
+          class="lg:hidden grid place-items-center size-9 rounded-full hover:bg-white/5">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <a href="./index.html"><img src="./public/logo.png" alt="logo" class="select-none" draggable="false" /></a>
+      </div>
+      <nav class="hidden lg:flex w-full max-w-[471px] justify-between">
+        <a href="./index.html" class="font-medium text-[15px] leading-[1]">Home</a>
+        <a href="#features" class="font-medium text-[15px] leading-[1]">Features</a>
+        <a href="#how" class="font-medium text-[15px] leading-[1]">How it Works</a>
+        <a href="#faq" class="font-medium text-[15px] leading-[1]">FAQ</a>
+        <a href="#contact" class="font-medium text-[15px] leading-[1]">Contact Us</a>
+      </nav>
+      <div class="hidden lg:flex gap-3 items-center">
+        <a href="./signin.html"
+          class="font-medium text-[15px] px-6 py-3 rounded-full border border-[var(--blue)] bg-[var(--color-bg)] hover:border-[var(--hover-blue)]">Sign
+          In</a>
+        <a href="./signup.html"
+          class="font-medium text-[15px] px-6 py-3 rounded-full bg-[var(--blue)] hover:bg-[var(--hover-blue)]">Sign
+          Up</a>
+      </div>
+    </div>
+
+    <div class="w-full max-w-[835px] mx-auto mt-[50px] lg:mt-[85px]">
+      <h1 class="poppins font-semibold text-[30px] lg:text-[48px] leading-[164%] uppercase text-center">
+        Isotoxin - <span class="bg-[var(--blue)] px-4 py-1 rounded-[20px]">secured</span> end‑to‑end offshore messenger
+      </h1>
+      <p class="lg:w-[690px] mx-auto text-[14px] leading-[24px] text-center mt-[33px] mb-[45px]">
+        Isotoxin is a secure messaging application that safeguards your metadata, encrypts your conversations,
+        and ensures that your messaging interactions remain completely anonymous.
+      </p>
+      <div class="relative mx-auto max-w-[900px]">
+        <img src="/public/header-phone.png" alt="phone" class="mx-auto max-w-full" draggable="false" />
+        <img src="/public/badge-bottomleft.png" alt=""
+          class="hidden lg:block absolute left-[0] bottom-[84px] pointer-events-none select-none" draggable="false" />
+        <img src="/public/msg-left.png" alt=""
+          class="hidden lg:block absolute left-[95px] top-[130px] pointer-events-none select-none" draggable="false" />
+        <img src="/public/msg-right.png" alt=""
+          class="hidden lg:block absolute right-[60px] bottom-[119px] pointer-events-none select-none"
+          draggable="false" />
+        <img src="/public/bubble-perfect.png" alt=""
+          class="hidden lg:block absolute right-[-60px] top-[92px] pointer-events-none select-none" draggable="false" />
+      </div>
+    </div>
+
+    <div id="menu-wrap"
+      class="fixed inset-0 z-50 opacity-0 pointer-events-none transition-opacity duration-200 lg:hidden">
+      <button id="close-backdrop" class="absolute inset-0 bg-black/60" aria-label="Close menu backdrop"></button>
+      <aside id="mobile-menu"
+        class="absolute left-0 top-0 h-full w-[90%] bg-[var(--color-bg)] shadow-2xl border-r border-[#2E303E] -translate-x-full transition-transform duration-300"
+        role="dialog" aria-modal="true">
+        <div class="p-6 pt-[40px] pb-[52px] flex items-center justify-between">
+          <button id="close-menu" aria-label="Close menu"
+            class="grid place-items-center size-9 rounded-full hover:bg-white/5">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+          <img src="/public/logo.png" alt="ISOTOXIN" draggable="false" /><span class="w-9"></span>
+        </div>
+        <nav class="px-6 space-y-10">
+          <a href="./index.html" class="block text-[15px] hover:opacity-80">Home</a>
+          <a href="#features" class="block text-[15px] hover:opacity-80">Features</a>
+          <a href="#how" class="block text-[15px] hover:opacity-80">How it Works</a>
+          <a href="#faq" class="block text-[15px] hover:opacity-80">FAQ</a>
+          <a href="#contact" class="block text-[15px] hover:opacity-80">Contact Us</a>
+          <div class="mt-4 flex items-center gap-3">
+            <a href="./signin.html"
+              class="w-full py-3 rounded-[100px] border border-[var(--blue)] hover:border-[var(--hover-blue)] text-[15px] text-center">Sign
+              In</a>
+            <a href="./signup.html"
+              class="w-full py-3 rounded-[100px] bg-[var(--blue)] hover:bg-[var(--hover-blue)] text-[15px] text-center">Sign
+              Up</a>
+          </div>
+          <div class="mt-[80px]">
+            <p class="text-[18px] tracking-wide mb-5">Download</p>
+            <div class="space-y-5 flex flex-col">
+              <a href="#" class="inline-block"><img src="/public/google-play-badge.svg" alt="Get it on Google Play"
+                  class="h-10" /></a>
+              <a href="#" class="inline-block"><img src="/public/android-badge.png" alt="APK File" class="h-10" /></a>
+            </div>
+          </div>
+          <div class="mt-6 pb-8">
+            <p class="text-[18px] tracking-wide mb-5">Social Media</p>
+            <div class="flex items-center gap-6">
+              <a href="#" aria-label="Website"><img src="/public/icons/reddit.svg" alt="reddit" /></a>
+              <a href="#" aria-label="X"><img src="/public/icons/x.svg" alt="x" /></a>
+              <a href="#" aria-label="Instagram"><img src="/public/icons/instagram.svg" alt="instagram" /></a>
+              <a href="#" aria-label="LinkedIn"><img src="/public/icons/linkedin.svg" alt="linkedin" /></a>
+            </div>
+          </div>
+        </nav>
+      </aside>
+    </div>
+  </header>
+  <main>
+    <section id="features" class="w-full max-w-[1228px] mx-auto px-6 md:px-[51px] mt-[64px] md:mt-[126px] mb-[80px]">
+      <div class="grid grid-cols-3 gap-x-8 gap-y-10 max-[768px]:grid-cols-2">
+        <div class="text-center flex flex-col lg:flex-row gap-3 items-center lg:items-end">
+          <span class="poppins block text-[40px] leading-[1] text-[var(--color-text)]">7,430</span>
+          <span class="mt-2 block text-[16px] leading-[24px] text-[var(--text-grey)]">
+            Bug Bounty Programs
+          </span>
+        </div>
+
+        <div class="text-center flex flex-col lg:flex-row gap-3 items-center lg:items-end">
+          <span class="poppins block text-[40px] leading-[1] text-[var(--color-text)]">14,360</span>
+          <span class="mt-2 block text-[16px] leading-[24px] text-[var(--text-grey)]">
+            Exploits Protection
+          </span>
+        </div>
+
+        <div class="text-center max-[768px]:col-span-2 max-[768px]:flex max-[768px]:justify-center">
+          <div class="text-center flex flex-col lg:flex-row gap-3 items-center lg:items-end">
+            <span class="poppins block text-[40px] leading-[1] text-[var(--color-text)]">6,212</span>
+            <span class="mt-2 block text-[16px] leading-[24px] text-[var(--text-grey)]">
+              Anonymity and Confidentiality
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="w-full px-4 max-w-[1562px] mx-auto flex flex-col items-center mb-[80px] md:mb-[240px]">
+      <h2 class="poppins font-semibold text-[30px] lg:text-[40px] leading-[1] uppercase text-center mb-8">What’s inside
+      </h2>
+      <p class="text-[15px] leading-[24px] text-center text-[var(--text-grey)] mb-[60px]">Discover all the powerful
+        tools built into our messenger — from secure messaging to unlimited calls and video chats.</p>
+      <div class="w-full hidden md:grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+          <div class="mb-6"><img src="/public/icons/whatsInside-1.svg" alt="" /></div>
+          <h3 class="font-semibold text-[20px]">Subscription Based Only</h3>
+          <p class="mt-4 text-[15px] text-[var(--text-grey)]">Available only by subscription — ad free and secure by
+            design.</p>
+        </article>
+        <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+          <div class="mb-6"><img src="/public/icons/whatsInside-2.svg" alt="" /></div>
+          <h3 class="font-semibold text-[20px]">Unlimited Calls</h3>
+          <p class="mt-4 text-[15px] text-[var(--text-grey)]">Make unlimited secure calls to any user, anytime.</p>
+        </article>
+        <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+          <div class="mb-6"><img src="/public/icons/whatsInside-3.svg" alt="" /></div>
+          <h3 class="font-semibold text-[20px]">Unlimited Messages</h3>
+          <p class="mt-4 text-[15px] text-[var(--text-grey)]">Send unlimited encrypted messages to any user, anytime.
+          </p>
+        </article>
+        <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+          <div class="mb-6"><img src="/public/icons/whatsInside-4.svg" alt="" /></div>
+          <h3 class="font-semibold text-[20px]">Unlimited Video Calls</h3>
+          <p class="mt-4 text-[15px] text-[var(--text-grey)]">Enjoy unlimited private video calls with any user, fully
+            encrypted.</p>
+        </article>
+      </div>
+      <div class="w-full md:hidden">
+        <div id="inside-track"
+          class="overflow-x-auto overscroll-x-contain snap-x snap-mandatory scroll-smooth hide-scrollbar pb-5">
+          <div class="flex gap-0 w-full">
+            <div data-index="0" class="snap-start shrink-0 w-full">
+              <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+                <div class="mb-6"><img src="/public/icons/whatsInside-1.svg" alt="" /></div>
+                <h3 class="font-semibold text-[20px] leading-[1] capitalize">Subscription Based Only</h3>
+                <p class="mt-4 text-[15px] leading-[24px] text-[var(--text-grey)]">Available only by subscription — ad
+                  free and secure by design.</p>
+              </article>
+            </div>
+            <div data-index="1" class="snap-start shrink-0 w-full">
+              <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+                <div class="mb-6"><img src="/public/icons/whatsInside-2.svg" alt="" /></div>
+                <h3 class="font-semibold text-[20px] leading-[1] capitalize">Unlimited Calls</h3>
+                <p class="mt-4 text-[15px] leading-[24px] text-[var(--text-grey)]">Make unlimited secure calls to any
+                  user, anytime.</p>
+              </article>
+            </div>
+            <div data-index="2" class="snap-start shrink-0 w-full">
+              <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+                <div class="mb-6"><img src="/public/icons/whatsInside-3.svg" alt="" /></div>
+                <h3 class="font-semibold text-[20px] leading-[1] capitalize">Unlimited Messages</h3>
+                <p class="mt-4 text-[15px] leading-[24px] text-[var(--text-grey)]">Send unlimited encrypted messages to
+                  any user, anytime.</p>
+              </article>
+            </div>
+            <div data-index="3" class="snap-start shrink-0 w-full">
+              <article class="rounded-[24px] bg-[var(--card-color)] py-6 px-8">
+                <div class="mb-6"><img src="/public/icons/whatsInside-4.svg" alt="" /></div>
+                <h3 class="font-semibold text-[20px] leading-[1] capitalize">Unlimited Video Calls</h3>
+                <p class="mt-4 text-[15px] leading-[24px] text-[var(--text-grey)]">Enjoy unlimited private video calls
+                  with any user, fully encrypted.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 flex items-center justify-center gap-2">
+          <button class="dot h-[4px] w-10 rounded-full bg-white/40" aria-label="slide 1"></button>
+          <button class="dot h-[4px] w-10 rounded-full bg-white/40" aria-label="slide 2"></button>
+          <button class="dot h-[4px] w-10 rounded-full bg-white/40" aria-label="slide 3"></button>
+          <button class="dot h-[4px] w-10 rounded-full bg-white/40" aria-label="slide 4"></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="relative overflow-hidden px-4">
+      <img src="/public/howItWorks-bg.svg" alt="" aria-hidden
+        class="pointer-events-none select-none absolute left-0 bottom-[72px] z-10 hidden xl:block" />
+      <div class="w-full max-w-[1391px] mx-auto flex flex-col lg:flex-row items-start justify-between gap-10 lg:gap-16">
+        <img src="/public/howItWorks-photo.png" alt="photo" class="hidden xl:block" />
+        <div class="w-full xl:max-w-[508px]">
+          <h2
+            class="poppins font-semibold uppercase text-[28px] sm:text-[34px] lg:text-[40px] leading-[1] text-center xl:text-left">
+            How it works?</h2>
+          <p class="mt-4 sm:mt-5 text-[15px] leading-[24px] text-[var(--text-grey)] text-center xl:text-left">Getting
+            started with our messenger takes just 3 simple steps</p>
+          <div class="mt-[64px]">
+            <div class="flex justify-center gap-6 sm:gap-7">
+              <div class="relative flex flex-col items-center z-0 py-1 w-full max-w-[52px]">
+                <span aria-hidden
+                  class="pointer-events-none absolute left-1/2 -translate-x-1/2 top-[44px] bottom-[44px] w-[2px] -z-10 bg-[repeating-linear-gradient(to_bottom,_#2E303E_0_8px,_transparent_8px_16px)]"></span>
+                <img src="/public/icons/howItWorksStep-1.png" alt="first" class="w-[52px] z-10" />
+                <div class="h-24 sm:h-19"></div>
+                <img src="/public/icons/howItWorksStep-2.png" alt="second" class="w-[52px] z-10" />
+                <div class="h-24 sm:h-19"></div>
+                <img src="/public/icons/howItWorksStep-3.png" alt="third" class="w-[52px] z-10" />
+              </div>
+              <div>
+                <h3 class="font-semibold text-[18px] sm:text-[20px]">Register Account</h3>
+                <p class="mt-2 text-[15px] leading-[24px] text-[var(--text-grey)]">Set up your account in just a minute
+                  and make it truly yours.</p>
+                <div class="mt-[64px]">
+                  <h3 class="font-semibold text-[18px] sm:text-[20px]">Subscribe</h3>
+                  <p class="mt-2 text-[15px] leading-[24px] text-[var(--text-grey)]">Choose a plan and enjoy unlimited
+                    secure communication.</p>
+                </div>
+                <div class="mt-[64px]">
+                  <h3 class="font-semibold text-[18px] sm:text-[20px]">Download The App</h3>
+                  <p class="mt-2 text-[15px] leading-[24px] text-[var(--text-grey)]">Get our secure messenger on your
+                    device at no cost.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 flex gap-[10px] justify-center xl:justify-start xl:ml-[84px]">
+            <a href="#"><img src="/public/google-play-badge.svg" alt="Google Play" /></a>
+            <a href="#"><img src="/public/android-badge.png" alt="android" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq"
+      class="bg-[url('/public/frequently-bg.png')] bg-no-repeat bg-bottom mt-[160px] md:mt-[240px] pb-[80px] px-4">
+      <div class="w-full max-w-[753px] mx-auto">
+        <h2 class="poppins font-semibold uppercase text-[28px] md:text-[40px] leading-[1] text-center">Frequently Asked
+          Questions</h2>
+        <p class="mt-4 md:mt-7 text-[15px] leading-[24px] text-center text-[var(--text-grey)]">Got questions? We’ve
+          collected the most popular ones with clear answers so you can get help instantly.</p>
+        <div class="mt-6 md:mt-8 flex flex-wrap items-center justify-center gap-3">
+          <span
+            class="h-[40px] md:h-[44px] px-5 md:px-6 rounded-[100px] text-[14px] md:text-[15px] font-medium inline-flex items-center justify-center bg-[var(--blue)]">Messenger</span>
+          <span
+            class="h-[40px] md:h-[44px] px-5 md:px-6 rounded-[100px] text-[14px] md:text-[15px] font-medium inline-flex items-center justify-center bg-[var(--card-color)]">About
+            Us</span>
+          <span
+            class="h-[40px] md:h-[44px] px-5 md:px-6 rounded-[100px] text-[14px] md:text-[15px] font-medium inline-flex items-center justify-center bg-[var(--card-color)]">Secure</span>
+          <span
+            class="h-[40px] md:h-[44px] px-5 md:px-6 rounded-[100px] text-[14px] md:text-[15px] font-medium inline-flex items-center justify-center bg-[var(--card-color)]">Else</span>
+        </div>
+        <div class="mt-8 md:mt-[60px] space-y-4 md:space-y-5">
+          <div class="rounded-[16px] bg-[var(--card-color)]">
+            <div class="px-5 md:px-8 py-5 md:py-6 flex items-center justify-between"><span
+                class="text-[16px] md:text-[18px] leading-[24px] pr-4">What Is Isotoxin Messenger?</span><button
+                class="size-8 md:size-9 grid place-items-center rounded-full bg-[var(--blue)] text-white select-none faq-toggle"
+                aria-expanded="false">+</button></div>
+            <div class="faq-answer hidden px-8 pb-6 text-[15px] text-[var(--text-grey)]">Answer for “What Is Isotoxin
+              Messenger?”.</div>
+          </div>
+          <div class="rounded-[16px] bg-[var(--card-color)]">
+            <div class="px-5 md:px-8 py-5 md:py-6 flex items-center justify-between"><span
+                class="text-[16px] md:text-[18px] leading-[24px] pr-4">Why Should I Trust Isotoxin?</span><button
+                class="size-8 md:size-9 grid place-items-center rounded-full bg-[var(--blue)] text-white select-none faq-toggle"
+                aria-expanded="false">+</button></div>
+            <div class="faq-answer hidden px-8 pb-6 text-[15px] text-[var(--text-grey)]">Answer for “Why Should I Trust
+              Isotoxin?”.</div>
+          </div>
+          <div class="rounded-[16px] bg-[var(--card-color)]">
+            <div class="px-5 md:px-8 py-5 md:py-6 flex items-center justify-between"><span
+                class="text-[16px] md:text-[18px] leading-[24px] pr-4">Does Isotoxin Have Calls ?</span><button
+                class="size-8 md:size-9 grid place-items-center rounded-full bg-[var(--blue)] text-white select-none faq-toggle"
+                aria-expanded="false">+</button></div>
+            <div class="faq-answer hidden px-8 pb-6 text-[15px] text-[var(--text-grey)]">Answer for “Does Isotoxin Have
+              Calls ?”.</div>
+          </div>
+          <div class="rounded-[16px] bg-[var(--card-color)]">
+            <div class="px-5 md:px-8 py-5 md:py-6 flex items-center justify-between"><span
+                class="text-[16px] md:text-[18px] leading-[24px] pr-4">How Do I Make A Call?</span><button
+                class="size-8 md:size-9 grid place-items-center rounded-full bg-[var(--blue)] text-white select-none faq-toggle"
+                aria-expanded="false">+</button></div>
+            <div class="faq-answer hidden px-8 pb-6 text-[15px] text-[var(--text-grey)]">Answer for “How Do I Make A
+              Call?”.</div>
+          </div>
+          <div class="rounded-[16px] bg-[#333745] px-5 md:px-8 py-5 md:py-6 flex items-center justify-between">
+            <span class="text-[16px] md:text-[18px] leading-[24px]">Still Have Questions?</span>
+            <a href="#contact"
+              class="py-[11px] md:py-[13px] px-5 md:px-6 rounded-[100px] bg-[var(--blue)] text-[14px] md:text-[15px] inline-flex items-center">Contact
+              Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="w-full max-w-[1546px] mx-auto md:mt-[160px] px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div class="w-full lg:max-w-[753px]">
+          <h2 class="poppins font-semibold text-[28px] md:text-[40px] leading-[1] uppercase text-center lg:text-left">
+            Get in touch</h2>
+          <p
+            class="text-center lg:text-left text-[15px] leading-[24px] text-[var(--text-grey)] mt-4 md:mt-5 max-w-[590px] mx-auto lg:mx-0">
+            We’d love to hear from you — whether it’s a question, feedback, or just to say hello.
+          </p>
+          <div class="w-full justify-center lg:justify-start flex flex-col md:flex-row gap-4 md:gap-6 mt-8 md:mt-10">
+            <div
+              class="border-[3px] border-[var(--card-color)] rounded-[16px] w-full md:w-[320px] py-5 px-6 flex gap-4 items-center">
+              <img src="/public/icons/tg-icon.svg" alt="Telegram" />
+              <div>
+                <h5 class="font-semibold text-[10px] leading-[24px] text-[var(--text-grey)]">TELEGRAM</h5><a
+                  class="font-normal text-[15px] leading-[24px] text-[#FFF1F1]" href="#">@isotoxin</a>
+              </div>
+            </div>
+            <div
+              class="border-[3px] border-[var(--card-color)] rounded-[16px] w-full md:w-[320px] py-5 px-6 flex gap-4 items-center">
+              <img src="/public/icons/email-icon.svg" alt="Email" />
+              <div>
+                <h5 class="font-semibold text-[10px] leading-[24px] text-[var(--text-grey)] uppercase">email</h5><a
+                  class="font-normal text-[15px] leading-[24px] text-[#FFF1F1]" href="#">support@isotoxin.im</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="w-full lg:max-w-[753px]">
+          <div class="rounded-[24px] py-8 md:py-10 px-6 md:px-8 bg-[var(--card-color)] space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <label class="rounded-[16px] bg-[var(--color-bg)] py-3 px-6 block">
+                <span class="font-semibold text-[10px] leading-[24px] uppercase text-[var(--text-grey)]">Name</span>
+                <input type="text" placeholder="John Doe"
+                  class="w-full bg-transparent h-[24px] px-0 border-0 outline-none text-white placeholder:text-[#FFF1F1] text-[15px] leading-[24px]" />
+              </label>
+              <label class="rounded-[16px] bg-[var(--color-bg)] py-3 px-6 block">
+                <span class="font-semibold text-[10px] leading-[24px] uppercase text-[var(--text-grey)]">Email</span>
+                <input type="email" placeholder="example@gmail.com"
+                  class="w-full bg-transparent h-[24px] px-0 border-0 outline-none text-white placeholder:text-[#FFF1F1] text-[15px] leading-[24px]" />
+              </label>
+            </div>
+            <label class="relative block rounded-[16px] bg-[var(--color-bg)] px-6 py-3" data-select>
+              <span class="font-semibold text-[10px] leading-[24px] uppercase text-[var(--text-grey)]">Question
+                Category</span>
+              <button type="button" data-select-trigger
+                class="w-full text-left text-white text-[15px] leading-[24px] h-6 flex items-center pr-10 focus:outline-none"><span
+                  data-select-value>Select</span></button>
+              <span aria-hidden class="pointer-events-none absolute right-[33px] top-1/2 -translate-y-1/2">
+                <svg class="select-arrow transition-transform duration-200" width="10" height="6" viewBox="0 0 10 6"
+                  fill="none">
+                  <path d="M1 1.25L5 4.75L9 1.25" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </span>
+              <ul data-select-list
+                class="hidden absolute left-0 right-0 top-[calc(100%+8px)] z-50 rounded-[12px] bg-[var(--color-bg)] border border-white/10 shadow-lg overflow-hidden max-h-60 overflow-auto">
+                <li><button type="button"
+                    class="opt w-full text-left px-4 py-3 text-[15px] hover:bg-white/10">General</button></li>
+                <li><button type="button"
+                    class="opt w-full text-left px-4 py-3 text-[15px] hover:bg-white/10">Account</button></li>
+                <li><button type="button"
+                    class="opt w-full text-left px-4 py-3 text-[15px] hover:bg-white/10">Security</button></li>
+                <li><button type="button"
+                    class="opt w-full text-left px-4 py-3 text-[15px] hover:bg-white/10">Billing</button></li>
+              </ul>
+            </label>
+            <label class="block rounded-[16px] bg-[var(--color-bg)] p-4">
+              <span class="font-semibold text-[10px] leading-[24px] uppercase text-[var(--text-grey)]">Message</span>
+              <textarea placeholder="Enter Your Question"
+                class="mt-1 w-full h-[92px] bg-transparent border-0 outline-none resize-none text-white placeholder:text-[#FFF1F1] text-[15px] leading-[24px]"></textarea>
+            </label>
+            <button type="submit"
+              class="mt-2 inline-flex items-center justify-center h-[48px] px-6 rounded-[100px] bg-[var(--blue)] text-[15px] font-medium w-full md:w-auto hover:brightness-110 active:brightness-95 transition">Send
+              Message</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <img class="mt-[57px] hidden lg:block" src="/public/bottom-bg.svg" alt="bottom-bg" />
+  </main>
+  <footer class="w-full max-w-[1646px] mx-auto mt-[80px] md:mt-[117px] mb-[40px] px-4">
+    <div
+      class="bg-[url('/public/bg-footer-phone.png')] lg:bg-[url('/public/footer-bg.png')] bg-no-repeat bg-center bg-cover lg:bg-auto rounded-[24px] py-8 md:py-[44px] px-6 md:px-[66px]">
+      <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10">
+        <div class="text-center lg:text-left">
+          <img src="/public/logo.png" alt="ISOTOXIN" class="mx-auto mb-0 lg:mb-6 lg:mx-0" />
+          <p class="text-[15px] leading-[18px] text-[var(--text-grey)] hidden lg:block">© 2025 Isotoxin. All rights
+            reserved.</p>
+        </div>
+        <div class="w-full md:max-w-[1098px] flex flex-col justify-between lg:flex-row gap-10 md:gap-6">
+          <div class="hidden lg:block text-left">
+            <h4 class="text-[18px] font-semibold mb-3 md:mb-5">About</h4>
+            <ul class="space-y-2 text-[15px] leading-[24px] text-[var(--text-grey)]">
+              <li><a class="hover:text-white" href="#features">Features</a></li>
+              <li><a class="hover:text-white" href="#how">How it Works</a></li>
+              <li><a class="hover:text-white" href="#faq">FAQ</a></li>
+              <li><a class="hover:text-white" href="#contact">Contact Us</a></li>
+            </ul>
+          </div>
+          <div class="hidden lg:block text-center lg:text-left">
+            <h4 class="text-[18px] font-semibold mb-3 md:mb-5">Resources</h4>
+            <ul class="space-y-2 text-[15px] leading-[24px] text-[var(--text-grey)]">
+              <li><a class="hover:text-white" href="#">Terms &amp; Conditions</a></li>
+              <li><a class="hover:text-white" href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+          <div class="text-center lg:text-left">
+            <h4 class="text-[18px] font-semibold mb-3 md:mb-5">Download</h4>
+            <div class="flex flex-col items-center lg:items-start gap-4 md:gap-5">
+              <a href="#" aria-label="Get it on Google Play"><img src="/public/google-play-badge.svg" alt="Google Play"
+                  class="h-10 md:h-auto" /></a>
+              <a href="#"><img src="/public/android-badge.png" alt="Android APK" class="h-10 md:h-auto" /></a>
+            </div>
+          </div>
+          <div class="text-center lg:text-left">
+            <h4 class="text-[18px] font-semibold mb-3 md:mb-5">Social Media</h4>
+            <div class="flex items-center justify-center lg:justify-start gap-6">
+              <a href="#" aria-label="Website"><img src="/public/icons/reddit.svg" alt="reddit" /></a>
+              <a href="#" aria-label="X"><img src="/public/icons/x.svg" alt="x" /></a>
+              <a href="#" aria-label="Instagram"><img src="/public/icons/instagram.svg" alt="instagram" /></a>
+              <a href="#" aria-label="LinkedIn"><img src="/public/icons/linkedin.svg" alt="linkedin" /></a>
+            </div>
+          </div>
+          <p class="text-[15px] text-center leading-[18px] text-[var(--text-grey)] lg:hidden">© 2025 Isotoxin. All
+            rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="./js/main.js"></script>
 </body>
 
 </html>
