@@ -15,15 +15,83 @@
 })();
 
 // FAQ toggles
-document.querySelectorAll('.faq-toggle').forEach(btn => {
+const toggles = document.querySelectorAll('#faq .faq-toggle');
+const panels = Array.from(toggles, (btn) => btn.closest('.faq-panel'));
+
+function isOpen(panel) {
+  return panel?.querySelector('.faq-toggle')?.getAttribute('aria-expanded') === 'true';
+}
+
+function setSymbol(btn, open) {
+  btn.textContent = open ? '–' : '+';
+}
+
+function openPanel(panel) {
+  const btn = panel.querySelector('.faq-toggle');
+  const answer = panel.querySelector('.faq-answer');
+  const inner = panel.querySelector('.faq-answer-inner');
+
+  if (isOpen(panel)) {
+    answer.style.height = inner.offsetHeight + 'px';
+    return;
+  }
+
+  btn.setAttribute('aria-expanded', 'true');
+  setSymbol(btn, true);
+
+  answer.style.height = '0px';
+
+  requestAnimationFrame(() => {
+    const target = inner.offsetHeight;
+    answer.style.height = target + 'px';
+  });
+
+  const onEnd = (e) => {
+    if (e.propertyName !== 'height') return;
+    answer.style.height = 'auto';
+    answer.removeEventListener('transitionend', onEnd);
+  };
+  answer.addEventListener('transitionend', onEnd);
+}
+
+function closePanel(panel) {
+  const btn = panel.querySelector('.faq-toggle');
+  const answer = panel.querySelector('.faq-answer');
+  const inner = panel.querySelector('.faq-answer-inner');
+
+  if (!isOpen(panel)) return;
+
+  btn.setAttribute('aria-expanded', 'false');
+  setSymbol(btn, false);
+
+  const current = inner.offsetHeight;
+  answer.style.height = current + 'px';
+  requestAnimationFrame(() => {
+    answer.style.height = '0px';
+  });
+}
+
+function closeAll() {
+  panels.forEach(closePanel);
+}
+
+toggles.forEach((btn) => {
   btn.addEventListener('click', () => {
-    const box = btn.closest('.rounded-[16px]');
-    const ans = box.querySelector('.faq-answer');
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    ans.classList.toggle('hidden');
+    const panel = btn.closest('.faq-panel');
+    const wasOpen = isOpen(panel);
+    closeAll();
+    if (!wasOpen) openPanel(panel);
   });
 });
+
+window.addEventListener('resize', () => {
+  const opened = panels.find(isOpen);
+  if (!opened) return;
+  const answer = opened.querySelector('.faq-answer');
+  const inner = opened.querySelector('.faq-answer-inner');
+  answer.style.height = inner.offsetHeight + 'px';
+});
+
 
 // WhatsInside mobile slider dots
 (function () {
@@ -228,3 +296,70 @@ function showError(input, show) {
   });
 
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const imgEl = document.querySelector('img[src="/public/icons/logo-orb.png"]');
+  if (!imgEl) return;
+
+  const card   = imgEl.closest('.relative');
+  const title  = card.querySelector('h3');
+  const desc   = card.querySelector('[class*="text-[var(--text-grey)"]');
+  const dots   = Array.from(card.querySelectorAll('.h-\\[4px\\].w-10.rounded-full')); // <-- фикс экранирования
+
+  const slides = [
+    { title: 'No Limits — Just Freedom', desc: 'Enjoy complete freedom to connect — send unlimited messages, make endless calls, and start as many video chats as you want.' },
+    { title: 'Privacy First — Always Safe', desc: 'Your conversations are protected. Stay connected with confidence and peace of mind.' },
+    { title: 'Fast. Simple. Anywhere.', desc: 'Jump into calls and chats instantly from any device — seamless experience every time.' }
+  ];
+
+  let i = 0, timer;
+  const INTERVAL = 3500;
+
+  function setDots(active) {
+    dots.forEach((d, idx) => {
+      d.classList.toggle('bg-[var(--blue)]', idx === active);
+      d.classList.toggle('bg-[var(--text-grey)]', idx !== active);
+    });
+  }
+
+  function render(idx) {
+    const s = slides[idx];
+    card.style.transition = 'opacity 200ms ease';
+    card.style.opacity = '0';
+    requestAnimationFrame(() => {
+      title.textContent = s.title;
+      desc.textContent  = s.desc;
+      setDots(idx);
+      requestAnimationFrame(() => (card.style.opacity = '1'));
+    });
+  }
+
+  function next() { i = (i + 1) % slides.length; render(i); }
+  function prev() { i = (i - 1 + slides.length) % slides.length; render(i); }
+
+  function start() { stop(); timer = setInterval(next, INTERVAL); }
+  function stop()  { if (timer) clearInterval(timer); }
+
+  dots.forEach((d, idx) => d.addEventListener('click', () => { i = idx; render(i); start(); }));
+
+  // свайпы
+  let x0 = 0;
+  card.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+  card.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - x0;
+    if (dx > 50) prev();
+    if (dx < -50) next();
+    start();
+  });
+
+  // пауза при ховере и стрелки
+  card.addEventListener('mouseenter', stop);
+  card.addEventListener('mouseleave', start);
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { next(); start(); }
+    if (e.key === 'ArrowLeft')  { prev(); start(); }
+  });
+
+  render(i);
+  start();
+});
