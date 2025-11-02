@@ -2,95 +2,144 @@
 // Mobile menu
 (function () {
   const wrap = document.getElementById('menu-wrap');
-  const open = document.getElementById('open-menu');
+  const openBtn = document.getElementById('open-menu');
   const closeBtn = document.getElementById('close-menu');
   const backdrop = document.getElementById('close-backdrop');
   const aside = document.getElementById('mobile-menu');
-  if (!wrap || !open || !aside) return;
-  const show = () => { wrap.classList.remove('pointer-events-none', 'opacity-0'); aside.classList.remove('-translate-x-full'); };
-  const hide = () => { wrap.classList.add('pointer-events-none', 'opacity-0'); aside.classList.add('-translate-x-full'); };
-  open.addEventListener('click', show);
-  backdrop.addEventListener('click', hide);
-  closeBtn.addEventListener('click', hide);
+
+  if (!wrap || !openBtn || !aside) return;
+
+  const show = () => {
+    wrap.classList.remove('pointer-events-none', 'opacity-0');
+    aside.classList.remove('-translate-x-full');
+  };
+
+  const hide = () => {
+    wrap.classList.add('pointer-events-none', 'opacity-0');
+    aside.classList.add('-translate-x-full');
+  };
+
+  openBtn.addEventListener('click', show);
+  closeBtn?.addEventListener('click', hide);
+  backdrop?.addEventListener('click', hide);
+
+  // Закрывать меню при клике по любой ссылке внутри мобильного меню
+  aside.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', hide);
+  });
 })();
 
 // FAQ toggles
 const toggles = document.querySelectorAll('#faq .faq-toggle');
-const panels = Array.from(toggles, (btn) => btn.closest('.faq-panel'));
+  const panels = Array.from(toggles, (btn) => btn.closest('.faq-panel'));
 
-function isOpen(panel) {
-  return panel?.querySelector('.faq-toggle')?.getAttribute('aria-expanded') === 'true';
-}
+  function isOpen(panel) {
+    return panel?.querySelector('.faq-toggle')?.getAttribute('aria-expanded') === 'true';
+  }
+  function setSymbol(btn, open) { btn.textContent = open ? '–' : '+'; }
 
-function setSymbol(btn, open) {
-  btn.textContent = open ? '–' : '+';
-}
+  function openPanel(panel) {
+    const btn = panel.querySelector('.faq-toggle');
+    const answer = panel.querySelector('.faq-answer');
+    const inner = panel.querySelector('.faq-answer-inner');
 
-function openPanel(panel) {
-  const btn = panel.querySelector('.faq-toggle');
-  const answer = panel.querySelector('.faq-answer');
-  const inner = panel.querySelector('.faq-answer-inner');
+    if (isOpen(panel)) {
+      // фиксация высоты на ресайз
+      answer.style.height = inner.offsetHeight + 'px';
+      return;
+    }
 
-  if (isOpen(panel)) {
-    answer.style.height = inner.offsetHeight + 'px';
-    return;
+    btn.setAttribute('aria-expanded', 'true');
+    setSymbol(btn, true);
+
+    // старт из 0 для плавности
+    answer.style.height = '0px';
+    requestAnimationFrame(() => {
+      const target = inner.offsetHeight;
+      answer.style.height = target + 'px';
+    });
+
+    const onEnd = (e) => {
+      if (e.propertyName !== 'height') return;
+      answer.style.height = 'auto'; // чтобы тянулось по контенту
+      answer.removeEventListener('transitionend', onEnd);
+    };
+    answer.addEventListener('transitionend', onEnd);
   }
 
-  btn.setAttribute('aria-expanded', 'true');
-  setSymbol(btn, true);
+  function closePanel(panel) {
+    const btn = panel.querySelector('.faq-toggle');
+    const answer = panel.querySelector('.faq-answer');
+    const inner = panel.querySelector('.faq-answer-inner');
 
-  answer.style.height = '0px';
+    if (!isOpen(panel)) return;
 
-  requestAnimationFrame(() => {
-    const target = inner.offsetHeight;
-    answer.style.height = target + 'px';
+    btn.setAttribute('aria-expanded', 'false');
+    setSymbol(btn, false);
+
+    // плавное сворачивание: от текущей высоты к 0
+    const current = inner.offsetHeight;
+    answer.style.height = current + 'px';
+    requestAnimationFrame(() => {
+      answer.style.height = '0px';
+    });
+  }
+
+  function closeAll() { panels.forEach(closePanel); }
+
+  toggles.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panel = btn.closest('.faq-panel');
+      const wasOpen = isOpen(panel);
+      closeAll();
+      if (!wasOpen) openPanel(panel);
+    });
   });
 
-  const onEnd = (e) => {
-    if (e.propertyName !== 'height') return;
-    answer.style.height = 'auto';
-    answer.removeEventListener('transitionend', onEnd);
-  };
-  answer.addEventListener('transitionend', onEnd);
-}
-
-function closePanel(panel) {
-  const btn = panel.querySelector('.faq-toggle');
-  const answer = panel.querySelector('.faq-answer');
-  const inner = panel.querySelector('.faq-answer-inner');
-
-  if (!isOpen(panel)) return;
-
-  btn.setAttribute('aria-expanded', 'false');
-  setSymbol(btn, false);
-
-  const current = inner.offsetHeight;
-  answer.style.height = current + 'px';
-  requestAnimationFrame(() => {
-    answer.style.height = '0px';
+  window.addEventListener('resize', () => {
+    const opened = panels.find(isOpen);
+    if (!opened) return;
+    const answer = opened.querySelector('.faq-answer');
+    const inner = opened.querySelector('.faq-answer-inner');
+    // пересчитать авто-высоту при ресайзе
+    answer.style.height = inner.offsetHeight + 'px';
   });
-}
 
-function closeAll() {
-  panels.forEach(closePanel);
-}
+  // ====== Tabs / Filter ======
+  const tabs = document.querySelectorAll('#faq .faq-tab');
+  let activeCat = 'Messenger';
 
-toggles.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const panel = btn.closest('.faq-panel');
-    const wasOpen = isOpen(panel);
+  function setActiveTab(cat) {
+    tabs.forEach((t) => {
+      const isActive = t.dataset.cat === cat;
+      t.setAttribute('aria-selected', String(isActive));
+      t.classList.toggle('bg-[var(--blue)]', isActive);
+      t.classList.toggle('bg-[var(--card-color)]', !isActive);
+    });
+  }
+
+  function applyFilter(cat) {
+    // закрыть все, чтобы не было дёрганий при скрытии открытой панели
     closeAll();
-    if (!wasOpen) openPanel(panel);
-  });
-});
+    panels.forEach((panel) => {
+      const show = panel.dataset.cat === cat;
+      panel.classList.toggle('hidden', !show);
+    });
+  }
 
-window.addEventListener('resize', () => {
-  const opened = panels.find(isOpen);
-  if (!opened) return;
-  const answer = opened.querySelector('.faq-answer');
-  const inner = opened.querySelector('.faq-answer-inner');
-  answer.style.height = inner.offsetHeight + 'px';
-});
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const cat = tab.dataset.cat;
+      if (cat === activeCat) return;
+      activeCat = cat;
+      setActiveTab(cat);
+      applyFilter(cat);
+    });
+  });
+
+  // инициализация
+  setActiveTab(activeCat);
+  applyFilter(activeCat);
 
 
 // WhatsInside mobile slider dots
